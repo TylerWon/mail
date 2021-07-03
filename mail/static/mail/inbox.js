@@ -46,16 +46,18 @@ function load_mailbox(mailbox) {
   // Characteristics of the div for each email:
   //    - Grey background if the email is read, white background if the email is unread
   //    - Each email displays the sender, subject, and timestamp
-  //    - The id of the email is added to the div
+  //    - The id of the email is added to the div as data
   //    - When the div is clicked, a full rendering of the email contents is displayed
   .then(function(emails) {
     emails.forEach(function(email) {
       const sender = email.sender;
       const subject = email.subject;
       const timestamp = email.timestamp;
+      const read = email.read;
+      const id = email.id;
       
       const div = document.createElement("div");
-      if (email.read) {
+      if (read) {
         div.className = "read-email";
       } else {
         div.className = "unread-email";
@@ -67,6 +69,12 @@ function load_mailbox(mailbox) {
         </div>
         <div>${sender}</div>
       `;
+      div.dataset.id = id;
+      div.addEventListener("click", function() {
+        mark_as_read(id);
+        view_email(id);
+      })
+
 
       document.querySelector("#emails-view").append(div);
     })
@@ -117,4 +125,22 @@ function send_email() {
 
   // Prevent default submission
   return false;
+}
+
+function mark_as_read(emailId) {
+  fetch(`/emails/${emailId}`, {
+    method: "PUT",
+    body: JSON.stringify({
+      read: true
+    })
+  })
+
+  // Catch any errors and log them to console
+  .catch(function(err) {
+    console.log(err);
+  })
+}
+
+function view_email(emailId) {
+  
 }
