@@ -43,6 +43,11 @@ function load_mailbox(mailbox) {
   })
 
   // Iterate through emails, creating a new div for each email and adding it to the DOM
+  // Characteristics of the div for each email:
+  //    - Grey background if the email is read, white background if the email is unread
+  //    - Each email displays the sender, subject, and timestamp
+  //    - The id of the email is added to the div
+  //    - When the div is clicked, a full rendering of the email contents is displayed
   .then(function(emails) {
     emails.forEach(function(email) {
       const sender = email.sender;
