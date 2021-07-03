@@ -18,6 +18,7 @@ function compose_email() {
 
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#email-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
 
   // Clear out composition fields
@@ -31,6 +32,7 @@ function load_mailbox(mailbox) {
   
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
+  document.querySelector('#email-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'none';
 
   // Show the mailbox name
@@ -56,9 +58,6 @@ function load_mailbox(mailbox) {
   .catch(function(err) {
     console.log(err);
   })
-
-  // Prevent default submission
-  return false
 }
 
 // Creates a new div that displays info about an email
@@ -147,9 +146,44 @@ function mark_as_read(emailId) {
   .catch(function(err) {
     console.log(err);
   })
+
+  // Prevent default submission 
+  return false;
 }
 
-// Displays the full email (sender, recipients, subject, timestamp, and body)
+// Displays the full email (sender, recipients, subject, timestamp, and body) for email with id = emailId
 function view_email(emailId) {
 
+  // Show the email view and hide other views
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#email-view').style.display = 'block';
+  document.querySelector('#compose-view').style.display = 'none';
+
+  // Retrieve email with id = emailId
+  fetch(`/emails/${emailId}`)
+
+  // Convert response to json
+  .then(function(response) {
+    return response.json();
+  })
+
+  // Set the inner HTML for the email view to display the full email
+  .then(function(email) {
+    const sender = email.sender;
+    const recipients = email.recipients;
+    const subject = email.subject;
+    const timestamp = email.timestamp;
+    const body = email.body;
+
+    const div = document.querySelector("#email-view");
+    div.innerHTML = `
+      <div id="email-headers">
+        <div><span style="font-weight: bold">From: </span>${sender}</div>
+        <div><span style="font-weight: bold">To: </span>${recipients}</div>
+        <div><span style="font-weight: bold">Subject: </span>${subject}</div>
+        <div><span style="font-weight: bold">Timestamp: </span>${timestamp}</div>
+      </div>
+      <div id="email-body">${body}</div>
+    `
+  })
 }
