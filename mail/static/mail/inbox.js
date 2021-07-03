@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
   load_mailbox('inbox');
 });
 
+// Displays email composition form
 function compose_email() {
 
   // Show compose view and hide other views
@@ -25,6 +26,7 @@ function compose_email() {
   document.querySelector('#compose-body').value = '';
 }
 
+// Loads a mailbox
 function load_mailbox(mailbox) {
   
   // Show the mailbox and hide other views
@@ -43,39 +45,9 @@ function load_mailbox(mailbox) {
   })
 
   // Iterate through emails, creating a new div for each email and adding it to the DOM
-  // Characteristics of the div for each email:
-  //    - Grey background if the email is read, white background if the email is unread
-  //    - Each email displays the sender, subject, and timestamp
-  //    - The id of the email is added to the div as data
-  //    - When the div is clicked, a full rendering of the email contents is displayed
   .then(function(emails) {
     emails.forEach(function(email) {
-      const sender = email.sender;
-      const subject = email.subject;
-      const timestamp = email.timestamp;
-      const read = email.read;
-      const id = email.id;
-      
-      const div = document.createElement("div");
-      if (read) {
-        div.className = "read-email";
-      } else {
-        div.className = "unread-email";
-      }
-      div.innerHTML = `
-        <div>
-          <span style="font-weight: bold">${subject}</span>
-          <span style="float: right">${timestamp}</span>
-        </div>
-        <div>${sender}</div>
-      `;
-      div.dataset.id = id;
-      div.addEventListener("click", function() {
-        mark_as_read(id);
-        view_email(id);
-      })
-
-
+      const div = create_email_div(email);
       document.querySelector("#emails-view").append(div);
     })
   })
@@ -89,8 +61,43 @@ function load_mailbox(mailbox) {
   return false
 }
 
+// Creates a new div that displays info about an email
+// Characteristics of the div for an email:
+//    - Grey background if the email is read, white background if the email is unread
+//    - Each email displays the sender, subject, and timestamp
+//    - The id of the email is added to the div as data
+//    - When the div is clicked, the email is marked as read and a full rendering of the email contents are displayed
+function create_email_div(email) {
+  const sender = email.sender;
+  const subject = email.subject;
+  const timestamp = email.timestamp;
+  const read = email.read;
+  const id = email.id;
+  
+  const div = document.createElement("div");
+  if (read) {
+    div.className = "read-email";
+  } else {
+    div.className = "unread-email";
+  }
+  div.innerHTML = `
+    <div>
+      <span style="font-weight: bold">${subject}</span>
+      <span style="float: right">${timestamp}</span>
+    </div>
+    <div>${sender}</div>
+  `;
+  div.dataset.id = id;
+  div.addEventListener("click", function() {
+    mark_as_read(id);
+    view_email(id);
+  })
+
+  return div;
+}
+
+// Sends an email composed in the email composition form
 function send_email() {
-  // Prepare body of request
   const recipients = document.querySelector("#compose-recipients").value;
   const subject = document.querySelector("#compose-subject").value;
   const body = document.querySelector("#compose-body").value;
@@ -127,6 +134,7 @@ function send_email() {
   return false;
 }
 
+// Marks the email with id = emailId as read
 function mark_as_read(emailId) {
   fetch(`/emails/${emailId}`, {
     method: "PUT",
@@ -141,6 +149,7 @@ function mark_as_read(emailId) {
   })
 }
 
+// Displays the full email (sender, recipients, subject, timestamp, and body)
 function view_email(emailId) {
-  
+
 }
