@@ -186,4 +186,9 @@ function view_email(emailId) {
       <div id="email-body">${body}</div>
     `
   })
+
+  // Catch any errors and log them to console
+  .catch(function(err) {
+    console.log(err);
+  })
 }
