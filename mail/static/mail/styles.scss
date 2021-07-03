@@ -1,0 +1,23 @@
+%email {
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+  }
+  
+textarea {
+    min-height: 400px;
+}
+  
+.read-email {
+    @extend %email;
+    background-color: #e6e6e6;
+}
+  
+.unread-email {
+    @extend %email;
+    background-color: white;
+}
+  
