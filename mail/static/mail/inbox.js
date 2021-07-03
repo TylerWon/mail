@@ -55,7 +55,13 @@ function load_mailbox(mailbox) {
       } else {
         div.classname = "unread-email";
       }
-      div.innerHTML = `${subject} ${timestamp}\n${sender}`;
+      div.innerHTML = `
+        <div>
+          <span style="font-weight: bold">${subject}</span>
+          <span style="float: right">${timestamp}</span>
+        </div>
+        <div>${sender}</div>
+      `;
 
       document.querySelector("#emails-view").append(div);
     })
