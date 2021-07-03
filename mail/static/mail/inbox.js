@@ -53,7 +53,7 @@ function load_mailbox(mailbox) {
       if (email.read) {
         div.className = "read-email";
       } else {
-        div.classname = "unread-email";
+        div.className = "unread-email";
       }
       div.innerHTML = `
         <div>
