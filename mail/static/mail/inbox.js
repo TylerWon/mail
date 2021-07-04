@@ -169,14 +169,25 @@ function view_email(emailId) {
 
   // Set the inner HTML for the email view to display the full email
   .then(function(email) {
-    const sender = email.sender;
-    const recipients = email.recipients;
-    const subject = email.subject;
-    const timestamp = email.timestamp;
-    const body = email.body;
+    create_email_full(email);
+  })
 
-    const div = document.querySelector("#email-view");
-    div.innerHTML = `
+  // Catch any errors and log them to console
+  .catch(function(err) {
+    console.log(err);
+  })
+}
+
+// Sets the inner HTML for the email view to display the full email (sender, recipients, subject, timestamp, and body)
+function create_email_full(email) {
+  const sender = email.sender;
+  const recipients = email.recipients;
+  const subject = email.subject;
+  const timestamp = email.timestamp;
+  const body = email.body;
+
+  const div = document.querySelector("#email-view");
+  div.innerHTML = `
       <div id="email-headers">
         <div><span style="font-weight: bold">From: </span>${sender}</div>
         <div><span style="font-weight: bold">To: </span>${recipients}</div>
@@ -184,11 +195,5 @@ function view_email(emailId) {
         <div><span style="font-weight: bold">Timestamp: </span>${timestamp}</div>
       </div>
       <div id="email-body">${body}</div>
-    `
-  })
-
-  // Catch any errors and log them to console
-  .catch(function(err) {
-    console.log(err);
-  })
+    `;
 }
