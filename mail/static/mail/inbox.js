@@ -95,44 +95,6 @@ function create_email_info(email) {
   return div;
 }
 
-// Sends an email composed in the email composition form
-function send_email() {
-  const recipients = document.querySelector("#compose-recipients").value;
-  const subject = document.querySelector("#compose-subject").value;
-  const body = document.querySelector("#compose-body").value;
-
-  // Send email
-  fetch("/emails", {
-    method: "POST",
-    body: JSON.stringify({
-      recipients: recipients,
-      subject: subject,
-      body: body
-    })
-  })
-  
-  // Convert response to json
-  .then(function(response) {
-    return response.json();
-  })
-
-  // Log response to console
-  .then(function(response) {
-    console.log(response);
-  })
-
-  // Catch any errors and log them to console
-  .catch(function(err) {
-    console.log(err);
-  })
-
-  // Load sent mailbox
-  load_mailbox("sent");
-
-  // Prevent default submission
-  return false;
-}
-
 // Marks the email with id = emailId as read
 function mark_as_read(emailId) {
   fetch(`/emails/${emailId}`, {
@@ -196,4 +158,42 @@ function create_email_full(email) {
       </div>
       <div id="email-body">${body}</div>
     `;
+}
+
+// Sends an email composed in the email composition form
+function send_email() {
+  const recipients = document.querySelector("#compose-recipients").value;
+  const subject = document.querySelector("#compose-subject").value;
+  const body = document.querySelector("#compose-body").value;
+
+  // Send email
+  fetch("/emails", {
+    method: "POST",
+    body: JSON.stringify({
+      recipients: recipients,
+      subject: subject,
+      body: body
+    })
+  })
+  
+  // Convert response to json
+  .then(function(response) {
+    return response.json();
+  })
+
+  // Log response to console
+  .then(function(response) {
+    console.log(response);
+  })
+
+  // Catch any errors and log them to console
+  .catch(function(err) {
+    console.log(err);
+  })
+
+  // Load sent mailbox
+  load_mailbox("sent");
+
+  // Prevent default submission
+  return false;
 }
