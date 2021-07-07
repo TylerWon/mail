@@ -49,7 +49,7 @@ function load_mailbox(mailbox) {
   // Iterate through emails, creating a new div for each email and adding it to the DOM
   .then(function(emails) {
     emails.forEach(function(email) {
-      const div = load_email_info(email);
+      const div = load_email_info(email, mailbox);
       document.querySelector("#emails-view").append(div);
     })
   })
@@ -66,7 +66,7 @@ function load_mailbox(mailbox) {
 //    - Each email displays the sender, subject, and timestamp
 //    - The id of the email is added to the div as data
 //    - When the div is clicked, the email is marked as read and a full rendering of the email contents are displayed
-function load_email_info(email) {
+function load_email_info(email, mailbox) {
   const sender = email.sender;
   const subject = email.subject;
   const timestamp = email.timestamp;
@@ -89,7 +89,7 @@ function load_email_info(email) {
   div.dataset.id = id;
   div.addEventListener("click", function() {
     mark_as_read(id);
-    view_email(id);
+    view_email(id, mailbox);
   })
 
   return div;
@@ -108,13 +108,10 @@ function mark_as_read(emailId) {
   .catch(function(err) {
     console.log(err);
   })
-
-  // Prevent default submission 
-  return false;
 }
 
 // Displays the full email (sender, recipients, subject, timestamp, and body) for email with id = emailId
-function view_email(emailId) {
+function view_email(emailId, mailbox) {
 
   // Show the email view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
@@ -131,7 +128,7 @@ function view_email(emailId) {
 
   // Set the inner HTML for the email view to display the full email
   .then(function(email) {
-    load_full_email(email);
+    load_full_email(email, mailbox);
   })
 
   // Catch any errors and log them to console
@@ -140,8 +137,9 @@ function view_email(emailId) {
   })
 }
 
-// Sets the inner HTML for the email view to display the full email (sender, recipients, subject, timestamp, and body)
-function load_full_email(email) {
+// Sets the inner HTML for the email view to display the full email (sender, recipients, subject, 
+// timestamp, and body) and option to archive/unarchive email
+function load_full_email(email, mailbox) {
   const sender = email.sender;
   const recipients = email.recipients;
   const subject = email.subject;
@@ -150,14 +148,57 @@ function load_full_email(email) {
 
   const div = document.querySelector("#email-view");
   div.innerHTML = `
-      <div id="email-headers">
-        <div><span style="font-weight: bold">From: </span>${sender}</div>
-        <div><span style="font-weight: bold">To: </span>${recipients}</div>
-        <div><span style="font-weight: bold">Subject: </span>${subject}</div>
-        <div><span style="font-weight: bold">Timestamp: </span>${timestamp}</div>
-      </div>
-      <div id="email-body">${body}</div>
-    `;
+    <div id="email-actions"></div>
+    <div id="email-headers">
+      <div><span style="font-weight: bold">From: </span>${sender}</div>
+      <div><span style="font-weight: bold">To: </span>${recipients}</div>
+      <div><span style="font-weight: bold">Subject: </span>${subject}</div>
+      <div><span style="font-weight: bold">Timestamp: </span>${timestamp}</div>
+    </div>
+    <div id="email-body">${body}</div>
+  `;
+
+  add_archive_or_unarchive_button(email, mailbox);
+}
+
+// Add an archive or unarchive button to email depending on the mailbox type
+function add_archive_or_unarchive_button(email, mailbox) {
+  let buttonName;
+  let archived;
+
+  if (mailbox === "inbox") {
+    buttonName = "archive";
+    archived = true;
+  } else if (mailbox === "archive") {
+    buttonName = "unarchive";
+    archived = false;
+  } else {
+    return;
+  }
+
+  const div = document.querySelector("#email-actions");
+  div.innerHTML = `
+    <button id="${buttonName}-button" style="btn btn-sm btn-outline-primary">${buttonName}</button>
+  `;
+  document.querySelector(`#${buttonName}-button`).addEventListener("click", function() {
+    mark_as_archived_or_unarchived(email.id, archived);
+    load_mailbox("inbox");
+  });
+}
+
+// Marks the email with id = emailId as archived or unarchived
+function mark_as_archived_or_unarchived(emailId, archived) {
+  fetch(`/emails/${emailId}`, {
+    method: "PUT",
+    body: JSON.stringify({
+      archived: archived
+    })
+  })
+
+  // Catch any errors and log them to console
+  .catch(function(err) {
+    console.log(err);
+  })
 }
 
 // Sends an email composed in the email composition form
