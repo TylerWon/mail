@@ -49,7 +49,7 @@ function load_mailbox(mailbox) {
   // Iterate through emails, creating a new div for each email and adding it to the DOM
   .then(function(emails) {
     emails.forEach(function(email) {
-      const div = create_email_info(email);
+      const div = load_email_info(email);
       document.querySelector("#emails-view").append(div);
     })
   })
@@ -66,7 +66,7 @@ function load_mailbox(mailbox) {
 //    - Each email displays the sender, subject, and timestamp
 //    - The id of the email is added to the div as data
 //    - When the div is clicked, the email is marked as read and a full rendering of the email contents are displayed
-function create_email_info(email) {
+function load_email_info(email) {
   const sender = email.sender;
   const subject = email.subject;
   const timestamp = email.timestamp;
@@ -131,7 +131,7 @@ function view_email(emailId) {
 
   // Set the inner HTML for the email view to display the full email
   .then(function(email) {
-    create_email_full(email);
+    load_full_email(email);
   })
 
   // Catch any errors and log them to console
@@ -141,7 +141,7 @@ function view_email(emailId) {
 }
 
 // Sets the inner HTML for the email view to display the full email (sender, recipients, subject, timestamp, and body)
-function create_email_full(email) {
+function load_full_email(email) {
   const sender = email.sender;
   const recipients = email.recipients;
   const subject = email.subject;
