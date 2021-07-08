@@ -68,7 +68,7 @@ function load_mailbox(mailbox) {
  * Creates a new div that displays info about an email
  * @param {object} email object that contains info about an email
  * @param {string} mailbox name of the mailbox the email is in 
- * @returns 
+ * @returns {HTMLDivElement} div that displays info about an email
  */
 function load_email_info(email, mailbox) {
   const sender = email.sender;
