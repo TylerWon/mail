@@ -190,7 +190,6 @@ function add_email_actions(email, mailbox) {
  * Add an archive or unarchive button to an email depending on the mailbox type
  * @param {object} email object that contains info about an email
  * @param {string} mailbox name of the mailbox the email is in
- * @returns 
  */
 function add_archive_or_unarchive_button(email, mailbox) {
   let buttonName;
