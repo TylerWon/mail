@@ -204,7 +204,24 @@ function add_reply_button(email) {
  * @param {object} email object that contains info about an email
  */
 function reply_email(email) {
-  
+  // Show compose view and hide other views
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#email-view').style.display = 'none';
+  document.querySelector('#compose-view').style.display = 'block';
+
+  const sender = email.sender;
+  const recipients = email.recipients;
+  const subject = email.subject;
+  const body = email.body;
+  const timestamp = email.timestamp;
+
+  document.querySelector("#compose-recipients").value = recipients;
+  if (subject.startsWith("Re:")) {
+    document.querySelector("#compose-subject").value = subject;
+  } else {
+    document.querySelector("#compose-subject").value = "Re: " + subject;
+  }
+  document.querySelector("#compose-body").value = `On ${timestamp} ${sender} wrote:\n` + body;
 }
 
 /**
