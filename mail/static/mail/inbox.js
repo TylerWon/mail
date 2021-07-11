@@ -213,12 +213,11 @@ function reply_email(email) {
   document.querySelector('#compose-view').style.display = 'block';
 
   const sender = email.sender;
-  const recipients = email.recipients;
   const subject = email.subject;
   const body = email.body;
   const timestamp = email.timestamp;
 
-  document.querySelector("#compose-recipients").value = recipients;
+  document.querySelector("#compose-recipients").value = sender;
   if (subject.startsWith("Re:")) {
     document.querySelector("#compose-subject").value = subject;
   } else {
@@ -307,4 +306,7 @@ function send_email() {
 
   // Load sent mailbox
   load_mailbox("sent");
+
+  // Prevent default submission
+  return false;
 }
