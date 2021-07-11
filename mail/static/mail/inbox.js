@@ -179,9 +179,19 @@ function load_full_email(email, mailbox) {
  * @param {string} mailbox name of the mailbox the email is in
  */
 function add_email_actions(email, mailbox) {
+  add_reply_button(email);
+
   if (mailbox === "inbox" || mailbox === "archive") {
     add_archive_or_unarchive_button(email, mailbox);
   }
+}
+
+/**
+ * Adds a reply button to an email
+ * @param {object} email object that contains info about an email
+ */
+function add_reply_button(email) {
+
 }
 
 /**
