@@ -160,7 +160,10 @@ function load_full_email(email, mailbox) {
 
   const div = document.querySelector("#email-view");
   div.innerHTML = `
-    <div id="email-actions"></div>
+    <div id="email-actions">
+      <span id="email-actions-archive-unarchive"></span>
+      <span id="email-actions-reply"></span>
+    </div>
     <div id="email-headers">
       <div><span style="font-weight: bold">From: </span>${sender}</div>
       <div><span style="font-weight: bold">To: </span>${recipients}</div>
@@ -179,11 +182,11 @@ function load_full_email(email, mailbox) {
  * @param {string} mailbox name of the mailbox the email is in
  */
 function add_email_actions(email, mailbox) {
-  add_reply_button(email);
-
   if (mailbox === "inbox" || mailbox === "archive") {
     add_archive_or_unarchive_button(email, mailbox);
   }
+
+  add_reply_button(email);
 }
 
 /**
@@ -191,8 +194,8 @@ function add_email_actions(email, mailbox) {
  * @param {object} email object that contains info about an email
  */
 function add_reply_button(email) {
-  const div = document.querySelector("#email-actions");
-  div.innerHTML = '<button id="reply-button">reply</button>';
+  const div = document.querySelector("#email-actions-reply");
+  div.innerHTML = div.innerHTML.concat('<button id="reply-button">reply</button>');
 
   document.querySelector("#reply-button").addEventListener("click", function() {
     reply_email(email);
@@ -241,7 +244,7 @@ function add_archive_or_unarchive_button(email, mailbox) {
     archived = false;
   }
 
-  const div = document.querySelector("#email-actions");
+  const div = document.querySelector("#email-actions-archive-unarchive");
   div.innerHTML = div.innerHTML.concat(`<button id="${buttonName}-button">${buttonName}</button>`);
 
   document.querySelector(`#${buttonName}-button`).addEventListener("click", function() {
