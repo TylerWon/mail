@@ -191,7 +191,12 @@ function add_email_actions(email, mailbox) {
  * @param {object} email object that contains info about an email
  */
 function add_reply_button(email) {
-
+  const div = document.querySelector("#email-actions");
+  div.innerHTML = div.innerHTML('<button id="reply-button">reply</button>');
+  
+  document.querySelector("#reply-button").addEventListener("click", function() {
+    reply_email(email);
+  });
 }
 
 /**
@@ -213,6 +218,7 @@ function add_archive_or_unarchive_button(email, mailbox) {
 
   const div = document.querySelector("#email-actions");
   div.innerHTML = div.innerHTML.concat(`<button id="${buttonName}-button">${buttonName}</button>`);
+
   document.querySelector(`#${buttonName}-button`).addEventListener("click", function() {
     mark_as_archived_or_unarchived(email.id, archived);
     load_mailbox("inbox");
