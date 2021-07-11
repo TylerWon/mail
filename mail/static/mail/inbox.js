@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-
   // Use buttons to toggle between views
   document.querySelector('#inbox').addEventListener('click', () => load_mailbox('inbox'));
   document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
@@ -17,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function() {
  * Displays email composition form
  */
 function compose_email() {
-
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#email-view').style.display = 'none';
@@ -205,7 +203,7 @@ function add_archive_or_unarchive_button(email, mailbox) {
 
   const div = document.querySelector("#email-actions");
   div.innerHTML = `
-    <button id="${buttonName}-button" style="btn btn-sm btn-outline-primary">${buttonName}</button>
+    <button id="${buttonName}-button">${buttonName}</button>
   `;
   document.querySelector(`#${buttonName}-button`).addEventListener("click", function() {
     mark_as_archived_or_unarchived(email.id, archived);
