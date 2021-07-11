@@ -202,9 +202,7 @@ function add_archive_or_unarchive_button(email, mailbox) {
   }
 
   const div = document.querySelector("#email-actions");
-  div.innerHTML = `
-    <button id="${buttonName}-button">${buttonName}</button>
-  `;
+  div.innerHTML = div.innerHTML.concat(`<button id="${buttonName}-button">${buttonName}</button>`);
   document.querySelector(`#${buttonName}-button`).addEventListener("click", function() {
     mark_as_archived_or_unarchived(email.id, archived);
     load_mailbox("inbox");
