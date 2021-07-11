@@ -192,11 +192,19 @@ function add_email_actions(email, mailbox) {
  */
 function add_reply_button(email) {
   const div = document.querySelector("#email-actions");
-  div.innerHTML = div.innerHTML('<button id="reply-button">reply</button>');
-  
+  div.innerHTML = '<button id="reply-button">reply</button>';
+
   document.querySelector("#reply-button").addEventListener("click", function() {
     reply_email(email);
   });
+}
+
+/**
+ * Loads email composition form with recipients, subject, and body fields pre-filled
+ * @param {object} email object that contains info about an email
+ */
+function reply_email(email) {
+  
 }
 
 /**
