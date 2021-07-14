@@ -195,7 +195,7 @@ function add_email_actions(email, mailbox) {
  */
 function add_reply_button(email) {
   const div = document.querySelector("#email-actions-reply");
-  div.innerHTML = div.innerHTML.concat('<button id="reply-button">reply</button>');
+  div.innerHTML = div.innerHTML.concat('<button id="reply-button">Reply</button>');
 
   document.querySelector("#reply-button").addEventListener("click", function() {
     reply_email(email);
@@ -236,10 +236,10 @@ function add_archive_or_unarchive_button(email, mailbox) {
   let archived;
 
   if (mailbox === "inbox") {
-    buttonName = "archive";
+    buttonName = "Archive";
     archived = true;
   } else {
-    buttonName = "unarchive";
+    buttonName = "Unarchive";
     archived = false;
   }
 
